@@ -2,25 +2,24 @@ name: Bazel
 
 on: [push]
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
 
-    - name: Make cache directory
-      run: mkdir -p ~/.cache/bazel_disk_cache
+      - uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
 
-    - name: cache bazel
-      id: cache-bazel
-      uses: actions/cache@v2
-      with:
-        path: ~/.cache/bazel_disk_cache 
-        key: ${{ runner.os }}-bazel
-    
-    - name: build
-      run: bazelisk build //... --disk_cache=~/.cache/bazel_disk_cache
+      - name: Test
+        run: |
+          cd examples
+          bazel test //... --test_output=all
 
-    - name: test
-      run: bazelisk test //... --disk_cache=~/.cache/bazel_disk_cache
+      - name: Test json (uncached test results)
+        run: |
+          cd examples
+          bazel test --config=json //... --test_output=all --cache_test_results=no

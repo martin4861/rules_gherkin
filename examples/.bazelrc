@@ -1,0 +1,1 @@
+test:json --@rules_gherkin//:cucumber_format=json
