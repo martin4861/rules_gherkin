@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Cucumber Steps (Fixed Socket)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/bazel-bin/DataFile/features/step_definitions/datafile_steps_steps_binary",
+            "args": [
+                "-u",
+                "/tmp/cucumber-debug.sock",
+                "--verbose"
+            ],
+            "cwd": "${workspaceFolder}/bazel-bin/DataFile/features/step_definitions/datafile_steps.sh.runfiles/_main",
+            "preLaunchTask": "prepare_cucumber_debug",
+            "postDebugTask": "cleanup_cucumber_debug_socket",
+            "sourceMap": {
+                "/proc/self/cwd": "${workspaceFolder}",
+                ".": "${workspaceFolder}"
+            }
+        }
+    ]
+}

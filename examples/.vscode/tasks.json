@@ -1,0 +1,130 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build_cucumber_test_debug",
+            "command": "bazel build -c dbg //Calc/features:calc_test //Calc/features/step_definitions:calculator_steps",
+            "osx": {
+                "command": "bazel build -c dbg --linkopt=\"-Wl,-oso_prefix .\" --copt=-fdebug-compilation-dir=${workspaceFolder} //Calc/features:calc_test //Calc/features/step_definitions:calculator_steps"
+            },
+            "type": "shell",
+            "group": "build"
+        },
+        {
+            "label": "build_cucumber_with_inputs_test_debug",
+            "command": "bazel build -c dbg //...",
+            "osx": {
+                "command": "bazel build -c dbg --linkopt=\"-Wl,-oso_prefix .\" --copt=-fdebug-compilation-dir=${workspaceFolder} //..."
+            },
+            "type": "shell",
+            "group": "build"
+        },
+        {
+            "label": "run_cucumber_ruby_test",
+            "type": "shell",
+            "command": "export RUNFILES_DIR=${workspaceFolder}/bazel-bin/Calc/features/calc_test.sh.runfiles && ${workspaceFolder}/bazel-bin/Calc/features/calc_test.sh.runfiles/rules_gherkin+/cucumber_ruby.sh -v -r $RUNFILES_DIR/_main/Calc/features $RUNFILES_DIR/_main/Calc/features",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run_cucumber_ruby_with_inputs_test",
+            "type": "shell",
+            "command": "export RUNFILES_DIR=${workspaceFolder}/bazel-bin/DataFile/features/datafile_test.sh.runfiles && ${workspaceFolder}/bazel-bin/DataFile/features/datafile_test.sh.runfiles/rules_gherkin+/cucumber_ruby.sh -v -r $RUNFILES_DIR/_main/DataFile/features $RUNFILES_DIR/_main/DataFile/features",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run_full_cucumber_test",
+            "type": "shell",
+            "command": "${workspaceFolder}/bazel-bin/Calc/features/calc_test.sh",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run_full_cucumber_with_inputs_test",
+            "type": "shell",
+            "command": "${workspaceFolder}/bazel-bin/DataFile/features/datafile_test.sh",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run_cucumber_with_inputs_test_with_debug_pause",
+            "type": "shell",
+            "command": "echo 'Starting cucumber test - attach debugger now!' && sleep 5 && ${workspaceFolder}/bazel-bin/DataFile/features/datafile_test.sh",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run_cucumber_test_with_debug_pause",
+            "type": "shell",
+            "command": "echo 'Starting cucumber test - attach debugger now!' && sleep 5 && ${workspaceFolder}/bazel-bin/Calc/features/calc_test.sh",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run_cucumber_debug_script",
+            "type": "shell",
+            "command": "${workspaceFolder}/tools/cucumber/debugging/run_cucumber_debug.sh",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run_cucumber_test_debug_script",
+            "type": "shell",
+            "command": "${workspaceFolder}/tools/cucumber/debugging/run_cucumber_debug.sh calc_test",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "cleanup_cucumber_debug_socket",
+            "type": "shell",
+            "command": "rm -f /tmp/cucumber-debug.sock",
+            "presentation": {
+                "reveal": "never"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "prepare_cucumber_debug",
+            "dependsOn": [
+                "build_cucumber_with_inputs_test_debug",
+                "cleanup_cucumber_debug_socket"
+            ],
+            "dependsOrder": "sequence"
+        }
+    ]
+}
