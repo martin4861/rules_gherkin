@@ -17,10 +17,7 @@
             "sourceMap": {
                 "/proc/self/cwd": "${workspaceFolder}",
                 ".": "${workspaceFolder}"
-            },
-            "postRunCommands": [
-                "platform shell gnome-terminal -- bash -c 'cd ${workspaceFolder} && ./tools/cucumber/debugging/run_cucumber_debug.sh datafile_test; exec bash' &"
-            ]
+            }
         },
         {
             "name": "Debug Calculator Steps",
@@ -39,6 +36,20 @@
                 "/proc/self/cwd": "${workspaceFolder}",
                 ".": "${workspaceFolder}"
             }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug DataFile (Full)",
+            "configurations": ["Debug DataFile Steps"],
+            "preLaunchTask": "Run Cucumber Debug (DataFile)",
+            "stopAll": true
+        },
+        {
+            "name": "Debug Calculator (Full)",
+            "configurations": ["Debug Calculator Steps"],
+            "preLaunchTask": "Run Cucumber Debug (Calculator)",
+            "stopAll": true
         }
     ]
 }

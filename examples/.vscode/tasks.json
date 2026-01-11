@@ -47,6 +47,62 @@
             },
             "problemMatcher": [],
             "dependsOrder": "sequence"
+        },
+        {
+            "label": "Run Cucumber Debug (DataFile)",
+            "type": "shell",
+            "command": "./tools/cucumber/debugging/run_cucumber_debug.sh datafile_test",
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": false,
+                "close": false
+            },
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^$",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^Running Cucumber in debug mode$",
+                    "endsPattern": "^Waiting for socket to be available\\.\\.\\.$"
+                }
+            }
+        },
+        {
+            "label": "Run Cucumber Debug (Calculator)",
+            "type": "shell",
+            "command": "./tools/cucumber/debugging/run_cucumber_debug.sh calc_test",
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": false,
+                "close": false
+            },
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^$",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^Running Cucumber in debug mode$",
+                    "endsPattern": "^Waiting for socket to be available\\.\\.\\.$"
+                }
+            }
         }
     ]
 }
