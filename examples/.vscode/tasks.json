@@ -37,18 +37,6 @@
             "dependsOrder": "sequence"
         },
         {
-            "label": "run_cucumber_debug_script",
-            "type": "shell",
-            "command": "${workspaceFolder}/tools/cucumber/debugging/run_cucumber_debug.sh",
-            "group": "test",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            },
-            "problemMatcher": [],
-            "dependsOrder": "sequence"
-        },
-        {
             "label": "Run Cucumber Debug (DataFile)",
             "type": "shell",
             "command": "./tools/cucumber/debugging/run_cucumber_debug.sh datafile_test",
