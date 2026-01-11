@@ -10,10 +10,8 @@ WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 # Determine the test directory based on the target
 if [[ "$TEST_TARGET" == "datafile_test" ]]; then
     TEST_DIR="DataFile/features"
-    STEPS_DIR="DataFile/features/step_definitions"
 elif [[ "$TEST_TARGET" == "calc_test" ]]; then
     TEST_DIR="Calc/features"
-    STEPS_DIR="Calc/features/step_definitions"
 else
     echo "ERROR: Unknown test target: ${TEST_TARGET}"
     echo "Usage: $0 [datafile_test|calc_test]"
