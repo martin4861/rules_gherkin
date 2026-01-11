@@ -13,6 +13,13 @@
             "group": "build"
         },
         {
+            "label": "refresh_compile_commands",
+            "type": "shell",
+            "command": "bazel run @hedron_compile_commands//:refresh_all -- --compilation_mode=dbg",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
             "label": "cleanup_cucumber_debug_socket",
             "type": "shell",
             "command": "rm -f /tmp/cucumber-debug.sock",
