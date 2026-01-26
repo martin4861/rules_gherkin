@@ -73,13 +73,28 @@ def _gherkin_test(ctx):
     # Read the cucumber format from the build setting
     cucumber_format = ctx.attr._cucumber_format[BuildSettingInfo].value
 
-    # Create unique output filename for test results (will be written to TEST_UNDECLARED_OUTPUTS_DIR)
-    output_filename = "{}_output_{}.txt".format(test_label.name, cucumber_format)
-
     # Build cucumber args with format flag
     additional_cucumber_args = []
     additional_cucumber_args.append("--format={}".format(cucumber_format))
     additional_cucumber_args.append("--quiet")
+
+    # Get all feature specs and build a list of feature files with their output filenames
+    feature_specs = _get_transitive_srcs(None, ctx.attr.deps).to_list()
+    feature_files = []
+    feature_run_list = []
+    for spec in feature_specs:
+        spec_file = spec.files.to_list()[0]
+        spec_basename = spec_file.basename
+        f = ctx.actions.declare_file("features/" + spec_basename)
+        feature_files.append(f)
+        ctx.actions.symlink(output = f, target_file = spec_file)
+
+        # Create unique output filename for each feature file by encoding the path
+        # Replace path separators to avoid collisions when multiple files have the same basename
+        encoded_path = spec_file.short_path.replace("/", "_").replace(".feature", "")
+        output_filename = "{}_{}_output_{}.txt".format(test_label.name, encoded_path, cucumber_format)
+        # Format: feature_path:output_filename (separated by colon for easy parsing in bash)
+        feature_run_list.append("features/{}:{}".format(spec_basename, output_filename))
 
     ctx.actions.expand_template(
         output = ctx.outputs.test,
@@ -90,16 +105,9 @@ def _gherkin_test(ctx):
             "{FEATURE_DIR}": feature_dir,
             "{SOCKET}": unique_socket,
             "{ADDITIONAL_CUCUMBER_ARGS}": " ".join(additional_cucumber_args),
-            "{OUTPUT_FILENAME}": output_filename,
+            "{FEATURE_RUN_LIST}": " ".join(feature_run_list),
         },
     )
-    feature_specs = _get_transitive_srcs(None, ctx.attr.deps).to_list()
-    feature_files = []
-    for spec in feature_specs:
-        spec_basename = spec.files.to_list()[0].basename
-        f = ctx.actions.declare_file("features/" + spec_basename)
-        feature_files.append(f)
-        ctx.actions.symlink(output = f, target_file = spec.files.to_list()[0])
 
     runfiles = ctx.runfiles(files = [ctx.file.steps, cucumber_wire_config, support_for_wire] + feature_files)
     runfiles = runfiles.merge(ctx.attr.steps.default_runfiles)

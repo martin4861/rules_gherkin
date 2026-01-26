@@ -3,7 +3,10 @@ load("@rules_gherkin//gherkin:defs.bzl", "gherkin_library", "gherkin_test")
 # One lib for multiple feature files
 gherkin_library(
     name = "feature_specs",
-    srcs = glob(["**/*.feature"]),
+    srcs = [
+        "addition.feature",
+        "division.feature",
+    ],
 )
 
 gherkin_test(
@@ -33,4 +36,18 @@ gherkin_test(
     name = "division_test",
     steps = "//Calc/features/step_definitions:calculator_steps",
     deps = [":division_feature"],
+)
+
+# This test is expected to fail
+
+gherkin_library(
+    name = "failure_feature",
+    srcs = ["failure.feature"],
+)
+
+gherkin_test(
+    name = "failure_test",
+    steps = "//Calc/features/step_definitions:calculator_steps",
+    deps = [":failure_feature"],
+    tags = ["manual"],  # Marked as manual since it's expected to fail
 )
