@@ -60,3 +60,5 @@ llvm.toolchain(
 use_repo(llvm, "llvm_toolchain")
 
 register_toolchains("@llvm_toolchain//:all")
+
+bazel_dep(name = "bazelrc-preset.bzl", version = "1.9.2")

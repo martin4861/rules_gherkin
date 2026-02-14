@@ -1,10 +1,13 @@
+########################
+# Import bazelrc presets
+import %workspace%/tools/preset.bazelrc
+
 test:json --@rules_gherkin//:cucumber_format=json
 
 common:ci --bes_results_url=https://app.buildbuddy.io/invocation/"
 common:ci --bes_backend=grpcs://remote.buildbuddy.io"
 
 common:ci --remote_cache=grpcs://remote.buildbuddy.io"
-common:ci --remote_timeout=10m"
 
 common:ci --remote_cache_compression
 common:ci --noslim_profile
