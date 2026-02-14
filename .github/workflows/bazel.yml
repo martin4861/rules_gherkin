@@ -16,6 +16,7 @@ jobs:
         with:
           bazelisk-cache: true
 
+          
       - name: Setup BB
         run: |
           echo "common --remote_header=x-buildbuddy-api-key=${{ secrets.BUILD_BUDDY_API_KEY }}" >> ~/.bazelrc
