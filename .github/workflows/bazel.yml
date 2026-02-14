@@ -15,22 +15,16 @@ jobs:
       - uses: bazel-contrib/setup-bazel@0.18.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
-          repository-cache: true
 
       - name: Setup BB
         run: |
-          echo "build --bes_results_url=https://app.buildbuddy.io/invocation/" >> ~/.bazelrc
-          echo "build --bes_backend=grpcs://remote.buildbuddy.io" >> ~/.bazelrc
           echo "common --remote_header=x-buildbuddy-api-key=${{ secrets.BUILD_BUDDY_API_KEY }}" >> ~/.bazelrc
-          echo "common --remote_cache=grpcs://remote.buildbuddy.io" >> ~/.bazelrc
-          echo "common --remote_timeout=10m" >> ~/.bazelrc
-
+          echo "common --config=ci" >> ~/.bazelrc
 
       - name: Test
         run: |
           cd examples
-          bazel test //... --test_output=all --execution_log_compact_file=bazel_exec_log --experimental_remote_cache_compression
+          bazel test //... --test_output=all  
 
       # - name: Test json (uncached test results)
       #   run: |
