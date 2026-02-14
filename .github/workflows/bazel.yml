@@ -2,6 +2,10 @@ name: Bazel
 
 on: [push]
 
+concurrency:
+  group: my-workflow-group
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
