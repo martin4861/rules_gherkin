@@ -26,7 +26,7 @@ jobs:
       - name: Test
         run: |
           cd examples
-          bazel test //... --test_output=all  
+          bazel --experimental_remote_repo_contents_cache test //... --test_output=all  
 
       # - name: Test json (uncached test results)
       #   run: |
