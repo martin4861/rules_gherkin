@@ -15,7 +15,7 @@ jobs:
       - uses: bazel-contrib/setup-bazel@0.18.0
         with:
           bazelisk-cache: true
-          repository-cache: examples/MODULE.bazel
+          # repository-cache: examples/MODULE.bazel
 
           
       - name: Setup BB
