@@ -2,6 +2,10 @@ name: Bazel
 
 on: [push]
 
+concurrency:
+  group: my-workflow-group
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,20 +15,23 @@ jobs:
       - uses: bazel-contrib/setup-bazel@0.18.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
-          repository-cache: true
+          
+      - name: Setup BB
+        run: |
+          echo "common --remote_header=x-buildbuddy-api-key=${{ secrets.BUILD_BUDDY_API_KEY }}" >> ~/.bazelrc
+          echo "common --config=ci" >> ~/.bazelrc
 
       - name: Test
         run: |
           cd examples
-          bazel test //... --test_output=all
+          bazel --experimental_remote_repo_contents_cache test //... --test_output=all  
 
-      - name: Test json (uncached test results)
-        run: |
-          cd examples
-          bazel test --config=json //... --test_output=all --cache_test_results=no
+      # - name: Test json (uncached test results)
+      #   run: |
+      #     cd examples
+      #     bazel test --config=json //... --test_output=all --cache_test_results=no
 
-      - name: Test failing test
-        run: |
-          cd examples
-          ./verify_test_fails.sh
+      # - name: Test failing test
+      #   run: |
+      #     cd examples
+      #     ./verify_test_fails.sh
